@@ -10,7 +10,6 @@ import {config} from "./config";
 import {handleMqEvents} from './mq'
 import dayjs from "dayjs";
 import {callbackQuery} from "telegraf/filters";
-import _ from "lodash";
 
 const bot = new Telegraf(config.BOT_TOKEN)
 
