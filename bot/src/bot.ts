@@ -6,7 +6,7 @@ import {
     getActiveDeadlines,
     mapMqDeadeline
 } from "./model";
-import {config, phrases} from "./config";
+import {config} from "./config";
 import {handleMqEvents} from './mq'
 import dayjs from "dayjs";
 import {callbackQuery} from "telegraf/filters";
