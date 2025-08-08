@@ -74,10 +74,6 @@ bot.command("remind", wrapErrors('/remind', async (ctx) => {
     )
 }))
 
-bot.hears(/^д+а+$/i, wrapErrors('да', async (ctx) => {
-    await ctx.sendVoice({source: './assets/pizda.ogg'})
-}))
-
 bot.command("an",
     wrapErrors('/an', async (ctx) => {
         if (ctx.message.reply_to_message === undefined) {
@@ -157,7 +153,7 @@ export async function listPageWithTitle(chatId: number, title: string, deadlines
     const page = Math.floor(offset / count) + 1
     const maxPage = Math.ceil(length / count)
 
-    await bot.telegram.sendMessage(chatId, `<b>${title}</b>` + '\n\n' + formatDeadlines(deadlines, offset),
+    await bot.telegram.sendMessage(chatId, `<b>${title}</b>` + '\n\n' + formatDeadlines(deadlines, offset, false),
         {
             parse_mode: 'HTML', link_preview_options: {is_disabled: true},
             reply_markup: Markup.inlineKeyboard(

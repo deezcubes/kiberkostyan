@@ -116,9 +116,9 @@ export function formatDeadline(deadline: DeadlineDto, mention: boolean = true): 
         (deadline.comment ?? ``)
 }
 
-export function formatDeadlines(deadlines: DeadlineDto[], offset: number = 0): string {
+export function formatDeadlines(deadlines: DeadlineDto[], offset: number = 0, mention: boolean = false): string {
     if (deadlines.length === 0) {
         return 'ничево нет...'
     }
-    return deadlines.map((curr, idx) => String(offset + idx + 1) + '. ' + formatDeadline(curr)).join('\n\n')
+    return deadlines.map((curr, idx) => String(offset + idx + 1) + '. ' + formatDeadline(curr, mention)).join('\n\n')
 }
