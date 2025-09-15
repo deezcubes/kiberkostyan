@@ -14,7 +14,8 @@ interface DeadlineMqDto {
   link: string | null,
   players: any,
   campaign: string | null,
-  location: LocationMqDto | null
+  location: LocationMqDto | null,
+  chat_id: string
 }
 
 async function sendEvent(type: EventType, id: number) {
@@ -30,7 +31,8 @@ async function sendEvent(type: EventType, id: number) {
     link: rawEntry.link ?? null,
     players: rawEntry.players,
     campaign: rawEntry.campaign?.title ?? null,
-    location: rawEntry.location ?? null
+    location: rawEntry.location ?? null,
+    chat_id: rawEntry.campaign?.chat_id ?? null
   }
 
   try {
