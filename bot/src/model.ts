@@ -99,7 +99,7 @@ export async function getActiveDeadlines() {
 }
 
 export async function getActiveDeadlinesByChat(chat_id: number) {
-    return _(await getAllDeadlines()).filter(it => it.chat_id === chat_id).value();
+    return _(await getActiveDeadlines()).filter(it => it.chat_id === chat_id).value();
 }
 
 
