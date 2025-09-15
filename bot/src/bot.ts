@@ -195,9 +195,9 @@ export async function launch() {
     await handleMqEvents(async mqMessage => {
         try {
             const deadlineDto = mapMqDeadeline(mqMessage.entry)
-
+            const chatId = deadlineDto.chat_id ?? config.CHAT_ID;
             await bot.telegram.sendMessage(
-                config.CHAT_ID,
+                chatId,
                 'Встреча ' + (mqMessage.type === 'CREATED' ? 'добавлена' : 'изменена') + ': \n' + formatDeadline(deadlineDto, mqMessage.type === 'CREATED'),
                 {parse_mode: 'HTML', link_preview_options: {is_disabled: true}}
             )
