@@ -802,6 +802,7 @@ export interface ApiCampaignCampaign extends Schema.CollectionType {
   attributes: {
     title: Attribute.String;
     system: Attribute.String;
+    chat_id: Attribute.BigInteger;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

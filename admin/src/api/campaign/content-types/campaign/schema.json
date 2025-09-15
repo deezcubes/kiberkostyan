@@ -17,6 +17,9 @@
     },
     "system": {
       "type": "string"
+    },
+    "chat_id": {
+      "type": "biginteger"
     }
   }
 }
