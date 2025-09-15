@@ -21,7 +21,7 @@ export interface DeadlineMqDto {
     datetime: string,
     comment: string | null,
     link: string | null,
-    players: any,
+    players: PlayerMqDto[],
     campaign: string | null,
     location: LocationMqDto | null,
     chat_id: string

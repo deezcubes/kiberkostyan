@@ -78,7 +78,7 @@ export function mapMqDeadeline(deadline: DeadlineMqDto): DeadlineDto {
         id: deadline.id,
         name: deadline.name,
         campaign: deadline.campaign,
-        players: deadline.players,
+        players: <PlayerDto[]>deadline.players,
         datetime: dayjs(deadline.datetime),
         comment: formatComment(deadline.comment),
         link: deadline.link,
