@@ -65,7 +65,7 @@ function wrapErrors<T>(title: string, fn: (ctx: T) => Promise<void>): (ctx: T) =
 
 bot.command("remind", wrapErrors('/remind', async (ctx) => {
     console.log("Remind command")
-    const deadlines = await deadlinesByChat(ctx.chat.id);
+    const deadlines = await deadlinesByChat(ctx.chat.id, ctx.chat.type);
 
     await listPageWithTitle(
         ctx.chat.id,
@@ -208,7 +208,10 @@ export async function launch() {
     await bot.launch()
 }
 
-async function deadlinesByChat(chat_id: number | undefined) {
+async function deadlinesByChat(chat_id: number | undefined, chat_type: string | undefined) {
+    if (chat_type === "private") {
+        return await getActiveDeadlines();
+    }
     const chatId = chat_id ?? config.CHAT_ID;
     return chatId === config.CHAT_ID
         ? await getActiveDeadlines()
