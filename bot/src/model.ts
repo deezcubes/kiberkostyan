@@ -31,7 +31,8 @@ export interface DeadlineDto {
     datetime: dayjs.Dayjs,
     comment: string | null,
     link: string | null,
-    location: LocationDto | null
+    location: LocationDto | null,
+    chat_id: number | null
 }
 
 function formatComment(comment: (string | null)): string | null {
@@ -50,7 +51,8 @@ function mapDeadline(id: number, deadline: Deadline): DeadlineDto {
         datetime: dayjs(deadline.datetime),
         comment: formatComment(deadline.comment ?? null),
         link: deadline.link ?? null,
-        location: mapLocation(deadline.location?.data?.attributes)
+        location: mapLocation(deadline.location?.data?.attributes),
+        chat_id: Number(deadline.campaign?.data?.attributes?.chat_id ?? null)
     };
 }
 
@@ -76,11 +78,12 @@ export function mapMqDeadeline(deadline: DeadlineMqDto): DeadlineDto {
         id: deadline.id,
         name: deadline.name,
         campaign: deadline.campaign,
-        players: deadline.players,
+        players: <PlayerDto[]>deadline.players,
         datetime: dayjs(deadline.datetime),
         comment: formatComment(deadline.comment),
         link: deadline.link,
-        location: deadline.location
+        location: deadline.location,
+        chat_id: Number(deadline.chat_id)
     }
 }
 
@@ -93,6 +96,10 @@ export async function getActiveDeadlines() {
     const allDeadlines = await getAllDeadlines()
     const now = dayjs()
     return _(allDeadlines).filter(it => it.datetime.isAfter(now)).sortBy(it => it.datetime.unix()).value()
+}
+
+export async function getActiveDeadlinesByChat(chat_id: number) {
+    return _(await getActiveDeadlines()).filter(it => it.chat_id === chat_id).value();
 }
 
 

@@ -23,7 +23,8 @@ export interface DeadlineMqDto {
     link: string | null,
     players: PlayerMqDto[],
     campaign: string | null,
-    location: LocationMqDto | null
+    location: LocationMqDto | null,
+    chat_id: string
 }
 
 export interface MqMessage {

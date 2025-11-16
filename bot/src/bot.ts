@@ -3,7 +3,7 @@ import {
     DeadlineDto,
     formatDeadline,
     formatDeadlines,
-    getActiveDeadlines,
+    getActiveDeadlines, getActiveDeadlinesByChat,
     mapMqDeadeline
 } from "./model";
 import {config} from "./config";
@@ -65,7 +65,7 @@ function wrapErrors<T>(title: string, fn: (ctx: T) => Promise<void>): (ctx: T) =
 
 bot.command("remind", wrapErrors('/remind', async (ctx) => {
     console.log("Remind command")
-    const deadlines = await getActiveDeadlines();
+    const deadlines = await deadlinesByChat(ctx.chat.id);
 
     await listPageWithTitle(
         ctx.chat.id,
@@ -87,6 +87,11 @@ bot.command("an",
     })
 )
 
+bot.command("chat",
+    wrapErrors("/chat", async (ctx) => {
+        await ctx.reply(`ID чата: ${ctx.chat.id}`)
+    }))
+
 bot.action(/^page_.*/, wrapErrors('кнопка', async (ctx) => {
     if (!ctx.has(callbackQuery("data"))) {
         return
@@ -107,7 +112,7 @@ bot.action(/^page_.*/, wrapErrors('кнопка', async (ctx) => {
 
     console.log(`Offset ${offset} count ${count}`)
 
-    const deadlines = await getActiveDeadlines();
+    const deadlines = await deadlinesByChat(ctx.chat?.id);
 
     if (offset > deadlines.length) {
         offset = Math.floor(deadlines.length / count) * count;
@@ -190,9 +195,9 @@ export async function launch() {
     await handleMqEvents(async mqMessage => {
         try {
             const deadlineDto = mapMqDeadeline(mqMessage.entry)
-
+            const chatId = deadlineDto.chat_id ?? config.CHAT_ID;
             await bot.telegram.sendMessage(
-                config.CHAT_ID,
+                chatId,
                 'Встреча ' + (mqMessage.type === 'CREATED' ? 'добавлена' : 'изменена') + ': \n' + formatDeadline(deadlineDto, mqMessage.type === 'CREATED'),
                 {parse_mode: 'HTML', link_preview_options: {is_disabled: true}}
             )
@@ -201,4 +206,11 @@ export async function launch() {
         }
     })
     await bot.launch()
+}
+
+async function deadlinesByChat(chat_id: number | undefined) {
+    const chatId = chat_id ?? config.CHAT_ID;
+    return chatId === config.CHAT_ID
+        ? await getActiveDeadlines()
+        : await getActiveDeadlinesByChat(chatId);
 }
