@@ -112,7 +112,7 @@ bot.action(/^page_.*/, wrapErrors('кнопка', async (ctx) => {
 
     console.log(`Offset ${offset} count ${count}`)
 
-    const deadlines = await deadlinesByChat(ctx.chat?.id);
+    const deadlines = await deadlinesByChat(ctx.chat?.id, ctx.chat?.type);
 
     if (offset > deadlines.length) {
         offset = Math.floor(deadlines.length / count) * count;
