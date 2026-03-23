@@ -64,7 +64,6 @@ function wrapErrors<T>(title: string, fn: (ctx: T) => Promise<void>): (ctx: T) =
 
 
 bot.command("remind", wrapErrors('/remind', async (ctx) => {
-    console.log("Remind command")
     const deadlines = await deadlinesByChat(ctx.chat.id, ctx.chat.type);
 
     await listPageWithTitle(
@@ -109,8 +108,6 @@ bot.action(/^page_.*/, wrapErrors('кнопка', async (ctx) => {
     if (dayjs().diff(dayjs(buttonTs), 'minute') > 10) {
         offset = 0;
     }
-
-    console.log(`Offset ${offset} count ${count}`)
 
     const deadlines = await deadlinesByChat(ctx.chat?.id, ctx.chat?.type);
 

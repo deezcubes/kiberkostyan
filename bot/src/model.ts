@@ -42,7 +42,6 @@ function formatComment(comment: (string | null)): string | null {
 }
 
 function mapDeadline(id: number, deadline: Deadline): DeadlineDto {
-    console.log(deadline)
     return {
         id,
         name: deadline.name,
